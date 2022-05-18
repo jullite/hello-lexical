@@ -1,5 +1,6 @@
 import LexicalComposer from '@lexical/react/LexicalComposer';
-import { $getRoot, $getSelection } from 'lexical';
+import { SharedHistoryContext } from './context';
+
 import ContentEditable from '@lexical/react/LexicalContentEditable';
 import RichTextPlugin from '@lexical/react/LexicalRichTextPlugin';
 import { createWebsocketProvider } from './collaboration';
@@ -13,16 +14,18 @@ function App() {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <RichTextPlugin
-        contentEditable={<ContentEditable className="editor-input"/>}
-        placeholder={<div>type here</div>}
-        initialEditorState={null}
-      />
-      <CollaborationPlugin
-        id="main"
-        providerFactory={createWebsocketProvider}
-        shouldBootstrap={true}
-      />
+      <SharedHistoryContext>
+        <RichTextPlugin
+          contentEditable={<ContentEditable className="editor-input" />}
+          placeholder={<div>type here</div>}
+          initialEditorState={null}
+        />
+        <CollaborationPlugin
+          id="main"
+          providerFactory={createWebsocketProvider}
+          shouldBootstrap={true}
+        />
+      </SharedHistoryContext>
     </LexicalComposer>
   );
 
